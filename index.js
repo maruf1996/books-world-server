@@ -19,25 +19,9 @@ const client = new MongoClient(uri, {
 const run = async () => {
   try {
     const db = client.db('books-world');
-    const userCollection = db.collection('users');
     const booksCollection = db.collection('books');
 
-    // user collection
-    app.post('/user', async (req, res) => {
-      const user = req.body;
-      const result = await userCollection.insertOne(user);
-      res.send(result);
-    });
-
-    app.get('/user/:email', async (req, res) => {
-      const email = req.params.email;
-      const result = await userCollection.findOne({ email });
-      if (result?.email) {
-        return res.send({ status: true, data: result });
-      }
-      res.send({ status: false });
-    });
-
+    // book collection
     app.get('/books', async (req, res) => {
       const cursor = booksCollection.find({});
       const books = await cursor.toArray();
@@ -47,9 +31,8 @@ const run = async () => {
 
     app.post('/book', async (req, res) => {
       const book = req.body;
-
+      console.log(book)
       const result = await booksCollection.insertOne(book);
-
       res.send(result);
     });
 
