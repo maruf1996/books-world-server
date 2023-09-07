@@ -20,6 +20,7 @@ const run = async () => {
   try {
     const db = client.db('books-world');
     const booksCollection = db.collection('books');
+    const wishlistCollection = db.collection('wishlist');
 
     // book collection
     app.get('/books', async (req, res) => {
@@ -87,6 +88,15 @@ const run = async () => {
         res.status(404).json({ error: 'Books not found' });
       }
     });
+
+    app.post('/wishlist', async (req, res) => {
+      const wishlist = req.body;
+      console.log(wishlist)
+      const result = await wishlistCollection.insertOne(wishlist);
+      res.send(result);
+    });
+
+
   } finally {
   }
 };
