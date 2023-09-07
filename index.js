@@ -21,6 +21,7 @@ const run = async () => {
     const db = client.db('books-world');
     const booksCollection = db.collection('books');
     const wishlistCollection = db.collection('wishlist');
+    const readingListCollection = db.collection('readingList');
 
     // book collection
     app.get('/books', async (req, res) => {
@@ -94,6 +95,25 @@ const run = async () => {
       console.log(wishlist)
       const result = await wishlistCollection.insertOne(wishlist);
       res.send(result);
+    });
+
+    app.get('/wishlist', async (req, res) => {
+      const cursor = wishlistCollection.find({});
+      const wishlist = await cursor.toArray();
+      res.send({ status: true, data: wishlist });
+    });
+
+    app.post('/readinglist', async (req, res) => {
+      const readinglist = req.body;
+      console.log(readinglist)
+      const result = await readingListCollection.insertOne(readinglist);
+      res.send(result);
+    });
+
+    app.get('/readinglist', async (req, res) => {
+      const cursor = readingListCollection.find({});
+      const readinglist = await cursor.toArray();
+      res.send({ status: true, data: readinglist });
     });
 
 
